@@ -1,0 +1,100 @@
+1tree working Directory
+2tree Stage(index)
+3tree Repository(HEAD)
+
+git init
+git add  a.md //还可以加多个文件 空格隔开
+git commit -m "add a a file"   //说明""
+git status            //查看工作状态
+    git reset HEAD test1.txt //  use "git reset HEAD <file>..." to unstage  如果写了指定文件名就reset它      否则默认reset最近的文件,即把暂存区恢复为上一次的工作状态(就是提交到仓库的文件HEAD)
+
+//改了一个文件
+  Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)//chekout -- <file>命令是把暂存区的文件覆盖到原文件工作区
+
+//暂存区有 test1.txt
+又在本地改了这个文件//说明两个版本
+窗口如下:
+{
+F:\test>git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   test1.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   test1.txt
+}
+
+git log //查看历史提交
+
+git reset HEAD~ //回退上个版本可以HEAD~n表示上n个版本   默认省略了--mixed
+                            //1 HEAD指向的是上一次的版本(第3棵树)
+                            // 2把HEAD指向的版本回滚到暂存区index(第2棵树)
+
+git reset --soft HEAD~ //1 HEAD指向的是上一次的版本(第3棵树)
+
+git reset --hard HEAD~  //1 HEAD指向的是上一次的版本(第3棵树)
+                                       // 2把HEAD指向的版本回滚到暂存区index(第2棵树)
+                                        //3 把暂存区的文件回滚到工作目录(第一课树)
+git reset [--mixed] 34df990d7033bce760d43d8a617bfcb6b1d0a136
+                        (id 前面部分字符也可以 只要知道id号 前后都可以滚)
+  cmd窗口: { commit 34df990d7033bce760d43d8a617bfcb6b1d0a136
+   Author: white0black <1550286960@qq.com>
+  Date:   Thu Jul 19 09:42:44 2018 +0800
+
+    add a a file
+}
+回滚个别文件:HEAD指针不会改变 git reset 版本快照 文件名/路径
+
+
+git commit --amend (-m "这里改说明,不写就直接进窗口") i表示insert   :q!退出窗口
+//修改最后一次提交 把暂存区文件commit 不产生新的版本
+
+git rm 文件名   //remove  删除工作目录和暂存区的文件,也就是取消track,next commit不纳入版本管理
+git rm -f 文件名   //暴力删除 即使工作目录和暂存区的同一个文件存在不同内容时,两文件都可以被删除
+git rm --cached //only delete 暂存区(保留工作目录的)
+//要想完全删除在3tree ,要使用rm(第1,2tree)和reset回退版本(第3tree)
+
+git mv oldFileName  newFileName      //Rename fileName  直接改工作区的文件是等于删除旧文件 添加了个新文件在工作区
+
+
+git branch 分支名     //创建分支 
+git log --decorate   //比git log 多了分支名
+   
+
+git checkout 分支名1   //切换分支(把HEAD指针指向分支名1)
+git log --decorate --oneline 一行显示一个快照(版本信息)
+git log --decorate --oneline --all --graph   所有分支图形化
+
+git merge 分支2名         //合并分支2到当前的分支(HEAD指针指向的分支)
+{1#  2分支文件无重名或者同名且内容相同的情况,直接把所有文件merge,完成合并.
+2#   2分支存在同名文件,内容不同时,需要在工作区编辑那个同名文件(===隔开2分支)然后git add ,git commit,完成合并
+}
+
+git checkout -b 分支名 //创建分支并且切换 --branch
+
+git branch -d  分支名     //delete分支  --delete
+
+git checkout HEAD~  //切换到匿名分支 HEAD~表示	HEAD上一个版本
+
+git checkout HEAD~  文件名  //把上一个版本的文件复制到工作目录和暂存区
+git checkout  文件名  //把暂存区复制到工作区
+
+git reset --hard 分支3名 //把HEAD和HEAD指向的分支 切到分支3里  原来的快照没有了
+在master分支执行此命令 变成 <>HEAD->master,分支3> 文件(分支3的)   //原来master指的特有快照文件没有了
+
+比较不同
+git diff 	          工作区&Stage
+git diff id            工作区&repository版本
+git diff HEAD      工作区&HEAD
+git diff id   id       2个版本
+
+git diff  --chche  id  stage&repository版本
+git diff  --cached     stage&HEAD
+  搭配/关键词 匹配查看
