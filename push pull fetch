@@ -1,0 +1,31 @@
+1.git init
+
+
+
+2.git remote add origin https://git.oschina.net/redArmy/springboot-swagger2.git(或则 git:git的地址)
+
+#关联本地仓库到远程仓库
+
+3. git add *
+
+#添加要提交的文件到暂存区
+
+4.git commit -m "init commint"
+
+#提交代码到文件控制仓库
+
+5.git fetch origin
+
+#将远程主机的更新，全部取回本地 
+
+6.git pull origin master    如果报错用这个 git pull origin master --allow-unrelated-histories
+
+如我在Github新建一个仓库，写了License，然后把本地一个写了很久仓库上传。这时会发现 github 的仓库和本地的没有一个共同的 commit 
+所以 git 不让提交，认为是写错了 origin 
+，如果开发者确定是这个 origin 就可以使用 --allow-unrelated-histories 告诉 git 自己确定
+
+#拉取远程分支代码到本地
+
+7.git push -u origin master:master
+
+#提交本地分支(master)代码到远程分支(master)
